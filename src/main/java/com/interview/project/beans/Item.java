@@ -4,7 +4,7 @@ public class Item {
     private String productId;
     private String description;
     private Dimension dimension;
-    private String dependsOn;
+    private Item dependsOn;
 
     public String getProductId() {
         return productId;
@@ -30,11 +30,11 @@ public class Item {
         this.dimension = dimension;
     }
 
-    public String getDependsOn() {
+    public Item getDependsOn() {
         return dependsOn;
     }
 
-    public void setDependsOn(String dependsOn) {
+    public void setDependsOn(Item dependsOn) {
         this.dependsOn = dependsOn;
     }
 }

@@ -1,31 +1,25 @@
 package com.interview.project.beans;
 
 public class Dimension {
-    private double length;
-    private double breadth;
-    private double height;
+    private int length;
+    private int breadth;
+    private int height;
 
-    public double getLength() {
+    public Dimension(int length, int breadth, int height) {
+        this.length = length;
+        this.breadth = breadth;
+        this.height = height;
+    }
+
+    public int getLength() {
         return length;
     }
 
-    public void setLength(double length) {
-        this.length = length;
-    }
-
-    public double getBreadth() {
+    public int getBreadth() {
         return breadth;
     }
 
-    public void setBreadth(double breadth) {
-        this.breadth = breadth;
-    }
-
-    public double getHeight() {
+    public int getHeight() {
         return height;
-    }
-
-    public void setHeight(double height) {
-        this.height = height;
     }
 }

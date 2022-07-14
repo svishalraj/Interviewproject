@@ -1,18 +1,44 @@
 package com.interview.project.rules.impl;
 
 import com.interview.project.beans.Item;
+import com.interview.project.beans.Order;
+import com.interview.project.beans.TypeOfOrder;
+import com.interview.project.inventory.Inventory;
 import com.interview.project.rules.RulesEngine;
 
+/**
+ * Ideally rules engine product can be used, but because of time constraint going through this approach.
+ */
 public class RulesEngineImpl implements RulesEngine {
+
+    private static String COUNTRY = "US";
+    private static int LENGTH = 6;
+    private static int BREADTH = 6;
+    private static int HEIGHT = 4;
+
+    public boolean canShip(Order order) {
+
+        if (!checkDependentShipments(order.getItem().getDependsOn())) {
+            System.out.println("Cannot ship, as dependents shipment is not allowed");
+            return false;
+        }
+
+        if (!canFitInBox(order.getItem())) {
+            System.out.println("Cannot ship, as it cannot fit in the box");
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Validates if the shipment belongs to outside of the country.
      *
-     * @param item details.
+     * @param order details.
      * @return status if the item can be shipped outside.
      */
-    @Override
-    public boolean canShipOutside(Item item) {
-        return false;
+    public TypeOfOrder canShipOutside(final Order order) {
+        return COUNTRY.equalsIgnoreCase(order.getShipTo().getCountry()) ? TypeOfOrder.AUTOMATIC : TypeOfOrder.MANUAL;
     }
 
     /**
@@ -21,9 +47,10 @@ public class RulesEngineImpl implements RulesEngine {
      * @param item details.
      * @return status if the item can fit inside a box.
      */
-    @Override
-    public boolean canFitInBox(Item item) {
-        return false;
+    private boolean canFitInBox(final Item item) {
+        return item.getDimension().getLength() <= LENGTH &&
+                item.getDimension().getBreadth() <= BREADTH &&
+                 item.getDimension().getHeight() <= HEIGHT;
     }
 
     /**
@@ -32,8 +59,11 @@ public class RulesEngineImpl implements RulesEngine {
      * @param item details.
      * @return status if the item can be shipped.
      */
-    @Override
-    public boolean checkDependentShipments(Item item) {
-        return false;
+    private boolean checkDependentShipments(final Item item) {
+        if (item == null) {
+            return true;
+        }
+
+        return canFitInBox(item) && checkDependentShipments(item.getDependsOn());
     }
 }

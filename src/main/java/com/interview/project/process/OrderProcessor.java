@@ -10,5 +10,5 @@ public interface OrderProcessor {
      * Method to process the orders.
      * @param order
      */
-    public void process(Order order);
+    void process(Order order);
 }
