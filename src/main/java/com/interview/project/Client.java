@@ -39,6 +39,21 @@ public class Client {
         item.setProductId("iphone-13");
         item.setDescription("IPhone 13 max");
         listItems.add(item);
+
+        Item item1 = new Item();
+        dimension = new Dimension(1, 1, 1);
+        item1.setDimension(dimension);
+        item1.setProductId("iphone-wire");
+
+        item.setDependsOn(item1);
+
+        Item item2 = new Item();
+        dimension = new Dimension(1, 1, 1);
+        item2.setDimension(dimension);
+        item2.setProductId("iphone-13");
+
+        item1.setDependsOn(item2);
+
         order.setItem(listItems);
         order.setPurchaseTime(System.currentTimeMillis());
         order.setShipTo(new Address("street", "US", "98013"));

@@ -14,6 +14,7 @@ public class Inventory {
     public Inventory() {
         productIds = new ArrayList<>();
         productIds.add("iphone-13");
+        productIds.add("iphone-wire");
     }
 
     public boolean hasInventory(List<Item> items) {
