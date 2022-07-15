@@ -17,9 +17,9 @@ import java.util.Queue;
 
 public class Client {
     public static void main(String... args) {
-        final RulesEngine rulesEngine = new RulesEngineImpl();
         final Inventory inventory = new Inventory();
-        final OrderProcessor orderProcessor = new OrderProcessorImpl(rulesEngine, inventory);
+        final RulesEngine rulesEngine = new RulesEngineImpl(inventory);
+        final OrderProcessor orderProcessor = new OrderProcessorImpl(rulesEngine);
 
         Queue<Order> orders = createOrders();
         for (Order order : orders) {
@@ -32,13 +32,14 @@ public class Client {
         PriorityQueue<Order> priorityQueue = new PriorityQueue<>((order1, order2) -> Long.compare(order2.getPurchaseTime(),
                 order1.getPurchaseTime()));
         final Order order = new Order();
+        List<Item> listItems = new ArrayList<>();
         Item item = new Item();
         Dimension dimension = new Dimension(1, 1, 1);
         item.setDimension(dimension);
         item.setProductId("iphone-13");
         item.setDescription("IPhone 13 max");
-
-        order.setItem(item);
+        listItems.add(item);
+        order.setItem(listItems);
         order.setPurchaseTime(System.currentTimeMillis());
         order.setShipTo(new Address("street", "US", "98013"));
 

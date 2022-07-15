@@ -6,6 +6,9 @@ import com.interview.project.beans.TypeOfOrder;
 import com.interview.project.inventory.Inventory;
 import com.interview.project.rules.RulesEngine;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Ideally rules engine product can be used, but because of time constraint going through this approach.
  */
@@ -15,20 +18,28 @@ public class RulesEngineImpl implements RulesEngine {
     private static int LENGTH = 6;
     private static int BREADTH = 6;
     private static int HEIGHT = 4;
+    private Inventory inventory;
 
+    public RulesEngineImpl(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
+    /**
+     * Check if the order can be shipped.
+     * @param order details.
+     * @return
+     */
     public boolean canShip(Order order) {
-
-        if (!checkDependentShipments(order.getItem().getDependsOn())) {
-            System.out.println("Cannot ship, as dependents shipment is not allowed");
-            return false;
+        boolean ship = true;
+        for (Item item : order.getItem()) {
+            Set<Item> visited = new HashSet<>();
+            if (!checkDependentShipments(item.getDependsOn(), visited)) {
+                System.out.println("Cannot ship, as dependents shipment is not allowed");
+                ship = false;
+                break;
+            }
         }
-
-        if (!canFitInBox(order.getItem())) {
-            System.out.println("Cannot ship, as it cannot fit in the box");
-            return false;
-        }
-
-        return true;
+        return ship;
     }
 
     /**
@@ -42,28 +53,22 @@ public class RulesEngineImpl implements RulesEngine {
     }
 
     /**
-     * Validates if the shipment can fit inside a box.
-     *
-     * @param item details.
-     * @return status if the item can fit inside a box.
+     * Check recursively all the dependents items.
+     * @param item
+     * @param visited
+     * @return
      */
-    private boolean canFitInBox(final Item item) {
-        return item.getDimension().getLength() <= LENGTH &&
-                item.getDimension().getBreadth() <= BREADTH &&
-                 item.getDimension().getHeight() <= HEIGHT;
-    }
-
-    /**
-     * Checks the dependency of the item on others.
-     *
-     * @param item details.
-     * @return status if the item can be shipped.
-     */
-    private boolean checkDependentShipments(final Item item) {
-        if (item == null) {
+    private boolean checkDependentShipments(final Item item, Set<Item> visited) {
+        if (item == null || visited.contains(item)) {
             return true;
         }
 
-        return canFitInBox(item) && checkDependentShipments(item.getDependsOn());
+        visited.add(item);
+
+        if (!inventory.hasInventory(item)) {
+            return false;
+        }
+
+        return checkDependentShipments(item.getDependsOn(), visited);
     }
 }

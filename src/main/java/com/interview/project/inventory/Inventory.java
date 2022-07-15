@@ -1,5 +1,7 @@
 package com.interview.project.inventory;
 
+import com.interview.project.beans.Item;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +16,18 @@ public class Inventory {
         productIds.add("iphone-13");
     }
 
-    public boolean hasInventory(String productId) {
-        return productIds.contains(productId);
+    public boolean hasInventory(List<Item> items) {
+        boolean found = true;
+        for (Item item : items) {
+            if(!productIds.contains(item.getProductId())) {
+                found = false;
+                break;
+            }
+        }
+        return found;
+    }
+
+    public boolean hasInventory(Item item) {
+        return productIds.contains(item.getProductId());
     }
 }

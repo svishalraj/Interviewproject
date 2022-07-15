@@ -10,6 +10,7 @@ import com.interview.project.beans.TypeOfOrder;
 public interface RulesEngine {
     /**
      * Validates if it can be shipped.
+     *
      * @param order details.
      * @return status if the item can be shipped.
      */
@@ -17,7 +18,9 @@ public interface RulesEngine {
 
     /**
      * Check if it can be shipped outside of US.
+     *
      * @param order
      * @return type of order manual or automatic processing.
      */
-    TypeOfOrder canShipOutside(Order order);}
+    TypeOfOrder canShipOutside(Order order);
+}

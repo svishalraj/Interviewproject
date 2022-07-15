@@ -10,11 +10,9 @@ import com.interview.project.rules.RulesEngine;
  */
 public class OrderProcessorImpl implements OrderProcessor {
     private RulesEngine rulesEngine;
-    private Inventory inventory;
 
-    public OrderProcessorImpl(RulesEngine rulesEngine, Inventory inventory) {
+    public OrderProcessorImpl(RulesEngine rulesEngine) {
         this.rulesEngine = rulesEngine;
-        this.inventory = inventory;
     }
 
     /**
@@ -24,7 +22,7 @@ public class OrderProcessorImpl implements OrderProcessor {
      */
     @Override
     public void process(Order order) {
-        if (rulesEngine.canShip(order) && inventory.hasInventory(order.getItem().getProductId())) {
+        if (rulesEngine.canShip(order)) {
             switch (rulesEngine.canShipOutside(order)) {
                 case AUTOMATIC:
                     System.out.println("Can be shipped automatically.");

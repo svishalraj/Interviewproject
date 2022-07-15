@@ -1,5 +1,7 @@
 package com.interview.project.beans;
 
+import java.util.Objects;
+
 public class Item {
     private String productId;
     private String description;
@@ -36,5 +38,18 @@ public class Item {
 
     public void setDependsOn(Item dependsOn) {
         this.dependsOn = dependsOn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Item)) return false;
+        Item item = (Item) o;
+        return productId.equals(item.productId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId);
     }
 }
