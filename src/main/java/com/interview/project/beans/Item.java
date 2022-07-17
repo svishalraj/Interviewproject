@@ -3,11 +3,27 @@ package com.interview.project.beans;
 import java.util.Objects;
 
 public class Item {
-    private String productId;
-    private String description;
+    @Override
+	public String toString() {
+		return "Item [productId=" + productId + ", quantity=" + quantity + ", description=" + description
+				+ ", dimension=" + dimension + ", dependsOn=" + dependsOn  + "]";
+	}
+
+	private String productId;
+	private int quantity;
+
+	private String description;
     private Dimension dimension;
     private Item dependsOn;
 
+    public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	
     public String getProductId() {
         return productId;
     }
@@ -40,7 +56,11 @@ public class Item {
         this.dependsOn = dependsOn;
     }
 
-    @Override
+    public float calculateVolume() {
+        return  dimension.getLength() * dimension.getBreadth() * dimension.getHeight();
+    }
+    
+   /** @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Item)) return false;
@@ -51,5 +71,5 @@ public class Item {
     @Override
     public int hashCode() {
         return Objects.hash(productId);
-    }
+    }**/
 }

@@ -14,13 +14,14 @@ public class Inventory {
     public Inventory() {
         productIds = new ArrayList<>();
         productIds.add("iphone-13");
+        productIds.add("iphone-xs");
         productIds.add("iphone-wire");
     }
 
     public boolean hasInventory(List<Item> items) {
         boolean found = true;
         for (Item item : items) {
-            if(!productIds.contains(item.getProductId())) {
+            if(!hasInventory(item)) {
                 found = false;
                 break;
             }

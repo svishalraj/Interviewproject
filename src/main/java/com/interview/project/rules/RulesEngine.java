@@ -23,4 +23,11 @@ public interface RulesEngine {
      * @return type of order manual or automatic processing.
      */
     TypeOfOrder canShipOutside(Order order);
+
+    /**
+     * Get the number of packages.
+     * @param order
+     * @return number of packages.
+     */
+    int getNumberOfPackages(Order order);
 }

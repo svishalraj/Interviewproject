@@ -6,11 +6,15 @@ import com.interview.project.process.OrderProcessor;
 import com.interview.project.rules.RulesEngine;
 
 /**
- * Implementation of Order.
+ * Implementation of Order Processing and the order status is updated accordingly .
  */
 public class OrderProcessorImpl implements OrderProcessor {
-    private RulesEngine rulesEngine;
+    private  final RulesEngine rulesEngine;
+    private final String CAN_BE_SHIPPED = "Can be shipped automatically.";
+    private final String CANNOT_BE_SHIPPED = "Cannot be shipped automatically";
+    private final String NEED_FURTHER_ASSISTANCE = "Need further assistance to be processed";
 
+    
     public OrderProcessorImpl(RulesEngine rulesEngine) {
         this.rulesEngine = rulesEngine;
     }
@@ -21,17 +25,22 @@ public class OrderProcessorImpl implements OrderProcessor {
      * @param order
      */
     @Override
-    public void process(Order order) {
+    public void process(final Order order) {
         if (rulesEngine.canShip(order)) {
             switch (rulesEngine.canShipOutside(order)) {
                 case AUTOMATIC:
-                    System.out.println("Can be shipped automatically.");
+                	order.setStatus(CAN_BE_SHIPPED);
+                	order.setPackageBoxes(rulesEngine.getNumberOfPackages(order));
                     break;
+                case MANUAL:
+                	order.setStatus(NEED_FURTHER_ASSISTANCE);
+                    order.setPackageBoxes(rulesEngine.getNumberOfPackages(order));
+                	break;
                 default:
-                    System.out.println("Cannot be shipped automatically");
+                    System.out.println(CANNOT_BE_SHIPPED);
             }
         } else {
-            System.out.println("Not eligible to ship");
+        	System.out.println("Not eligible to ship");
         }
     }
 }
